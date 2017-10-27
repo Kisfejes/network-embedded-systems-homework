@@ -1,0 +1,29 @@
+{
+  "name": "network-embedded-systems-homework",
+  "version": "1.0.0",
+  "description": "Homework for Network Embedded Systems Course: RFID based access control system with single-board computer (raspberry pi)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kisfejes/network-embedded-systems-homework.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kisfejes/network-embedded-systems-homework/issues"
+  },
+  "homepage": "https://github.com/Kisfejes/network-embedded-systems-homework#readme",
+  "devDependencies": {
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0"
+  },
+  "dependencies": {
+    "eslint": "^4.9.0"
+  }
+}
