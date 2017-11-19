@@ -1,0 +1,15 @@
+{
+  "db": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "rfid_access",
+    "username": "postgres",
+    "password": "devpass"
+  },
+  "api": {
+    "port": 7070
+  },
+  "cors": {
+    "whitelist": ["http://localhost:4200"]
+  }
+}

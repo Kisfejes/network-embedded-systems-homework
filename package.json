@@ -24,6 +24,9 @@
     "eslint-plugin-react": "^7.4.0"
   },
   "dependencies": {
-    "eslint": "^4.9.0"
+    "body-parser": "^1.18.2",
+    "eslint": "^4.9.0",
+    "express": "^4.16.2",
+    "sequelize": "^4.22.1"
   }
 }

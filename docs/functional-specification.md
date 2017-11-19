@@ -1,1 +1,2 @@
-# TODO
+# Features
+* Easy device registration

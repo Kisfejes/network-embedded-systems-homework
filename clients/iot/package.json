@@ -4,8 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "send-client": "node ./scripts/send-client.js",
+    "cli": "node ./bin/rfid-access.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "figlet": "^1.2.0",
+    "make-dir": "^1.1.0",
+    "mqtt": "^2.14.0",
+    "node-fetch": "^1.7.3",
+    "onoff": "^1.1.8",
+    "pn532": "^0.1.0",
+    "serialport": "^6.0.4",
+    "yargs": "^10.0.3"
+  }
 }

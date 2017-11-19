@@ -1,0 +1,23 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=dev nodemon server.js",
+    "cli": "NODE_ENV=dev node ./bin/cli"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "hashids": "^1.1.4",
+    "morgan": "^1.9.0",
+    "pg": "^7.3.0",
+    "sequelize": "^4.22.1",
+    "yargs": "^10.0.3"
+  }
+}

@@ -1,0 +1,1 @@
+alias unzip='tar -xvzf rfid-access.tar -C ./rfid-access'
