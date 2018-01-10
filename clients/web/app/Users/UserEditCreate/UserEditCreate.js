@@ -3,21 +3,25 @@ import PropTypes from 'prop-types';
 
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 
+import TagReader from './TagReader';
+
 import styles from './style';
-import { generateRandomUserName, fetchAPI } from '../../util'
+import { generateRandomUserName, fetchAPI } from '../../util';
 
 class UserEditCreate extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      userName: generateRandomUserName(),
-      rfid: '',
+      userName: this.props.initUserData.userName || generateRandomUserName(),
+      rfid: this.props.initUserData.rfid,
       devices: [],
-      selectedDevices: []
+      selectedDevices: this.props.initUserData.accessToDevices || [],
+      tagReaderOpen: false
     };
   }
 
@@ -38,7 +42,16 @@ class UserEditCreate extends Component {
       rfid,
       deviceIds: selectedDevices
     });
-    console.log(newUser);
+  }
+
+  async saveUser() {
+    const { userName, rfid, selectedDevices } = this.state;
+
+    await fetchAPI('users', 'update', {
+      name: userName,
+      rfid,
+      deviceIds: selectedDevices
+    }, this.props.initUserData.userId);
   }
 
   renderDevices() {
@@ -73,7 +86,8 @@ class UserEditCreate extends Component {
   }
 
   render() {
-    const { userName, rfid } = this.state;
+    const { userName, rfid, tagReaderOpen } = this.state;
+    const { mode } = this.props;
 
     return (
       <Dialog
@@ -101,6 +115,11 @@ class UserEditCreate extends Component {
                 value={rfid}
                 onChange={(event) => { this.setState({ rfid: event.target.value }); }}
               />
+              <FlatButton
+                label="Read from scanner"
+                onClick={() => { this.setState({ tagReaderOpen: true }); }}
+                primary
+              />
             </div>
           </div>
           <div>
@@ -109,12 +128,16 @@ class UserEditCreate extends Component {
           </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <RaisedButton
-              label="Create"
+              label={mode === 'CREATE' ? 'Create' : 'Save'}
               primary
               style={{ marginRight: '10px' }}
               onClick={
                 async () => {
-                  await this.createUser();
+                  if (mode === 'CREATE') {
+                    await this.createUser();
+                  } else {
+                    await this.saveUser();
+                  }
                   await this.props.refreshUsers();
                   this.props.onReqClose();
                 }
@@ -126,6 +149,18 @@ class UserEditCreate extends Component {
             />
           </div>
         </div>
+        {
+          tagReaderOpen &&
+          <TagReader
+            open={tagReaderOpen}
+            close={() => { this.setState({ tagReaderOpen: false }); }}
+            deviceList={this.state.devices.map(device => ({
+              UID: device.UID,
+              name: device.name
+            }))}
+            setTag={(UID) => { this.setState({ rfid: UID }); }}
+          />
+        }
       </Dialog>
     );
   }
@@ -133,7 +168,14 @@ class UserEditCreate extends Component {
 
 UserEditCreate.propTypes = {
   onReqClose: PropTypes.func.isRequired,
-  refreshUsers: PropTypes.func.isRequired
+  refreshUsers: PropTypes.func.isRequired,
+  mode: PropTypes.oneOf(['CREATE', 'EDIT']).isRequired,
+  initUserData: PropTypes.shape({
+    userId: PropTypes.number,
+    userName: PropTypes.string,
+    rfid: PropTypes.string,
+    accessToDevices: PropTypes.array
+  })
 };
 
 export default UserEditCreate;

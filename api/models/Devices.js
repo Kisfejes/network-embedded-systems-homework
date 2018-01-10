@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   Devices.associate = (models) => {
     Devices.belongsToMany(models.Users, { through: 'UserDevices' });
+    Devices.hasMany(models.AccessLogs);
   };
   return Devices;
 };

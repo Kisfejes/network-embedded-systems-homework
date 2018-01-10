@@ -16,11 +16,9 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import TextField from 'material-ui/TextField';
-
 import moment from 'moment';
 
-import Loader from '../Loader/Loader';
-
+import mqttClient from '../MQTTClient';
 import DeviceWizard from './DeviceWizard/DeviceWizard';
 
 import styles from './style';
@@ -73,6 +71,12 @@ class Devices extends Component {
       addDeviceStepIndex: 2,
       currentDevice: device
     });
+  }
+
+  updateAccessConfig(deviceUID) {
+    const accessConfigUpdateTopic = `device/service/update-access-config/${deviceUID}`;
+    const client = mqttClient.getClient();
+    client.publish(accessConfigUpdateTopic, '');
   }
 
   async deleteDevice(deviceId) {
@@ -132,6 +136,10 @@ class Devices extends Component {
                       onClick={this.editDevice.bind(this, device)}
                     />
                     <MenuItem
+                      primaryText="Update Access Config"
+                      onClick={this.updateAccessConfig.bind(this, device.UID)}
+                    />
+                    <MenuItem
                       primaryText="Delete"
                       onClick={this.deleteDevice.bind(this, device.id)}
                     />
@@ -168,7 +176,7 @@ class Devices extends Component {
             (devices.length === 0) ?
             (
               <div style={styles.bodyTextContainer}>
-                <span style={styles.bodyText}>{'It seems you dont have any device, click on "Add" button!'}</span>
+                {/* <span style={styles.bodyText}>{'It seems you dont have any device, click on "Add" button!'}</span> */}
               </div>
             ) :
             (this.renderDevices())

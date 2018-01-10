@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import RFIDIcon from 'material-ui/svg-icons/communication/rss-feed';
 import Paper from 'material-ui/Paper';
+import Dock from 'react-dock';
 
 import Users from './Users/Users';
 import Dashboard from './Dashboard/Dashboard';
 import Devices from './Devices/Devices';
+import DevTools from './DevTools/DevTools';
 
 import mqttClient from './MQTTClient';
 
@@ -20,12 +22,31 @@ class App extends Component {
     super(props);
 
     this.state = {
-      selectedMenu: LEFT_MENU_CHOICES[2]
+      selectedMenu: LEFT_MENU_CHOICES[0],
+      isDockVisible: true,
+      dockPosition: 'bottom'
     };
+
+    this.keydown = this.keydown.bind(this);
   }
+
 
   componentDidMount() {
     mqttClient.connect('mqtt://127.0.0.1:3300');
+
+    document.addEventListener('keydown', this.keydown);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.keydown);
+  }
+
+  keydown(event) {
+    if (event.key === 'h' && event.ctrlKey) {
+      this.setState({
+        isDockVisible: !this.state.isDockVisible,
+      });
+    }
   }
 
   renderContent() {
@@ -86,6 +107,13 @@ class App extends Component {
             {this.renderContent()}
           </Paper>
         </div>
+        <Dock
+          position={this.state.dockPosition}
+          isVisible={this.state.isDockVisible}
+          dimMode={'none'}
+        >
+          {<DevTools />}
+        </Dock>
       </div>
     );
   }

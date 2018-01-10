@@ -4,7 +4,15 @@ module.exports = async (req, res) => {
   try {
     const db = getDB();
 
-    const users = await db.Users.findAll();
+    const users = await db.Users.findAll({
+      include: {
+        model: db.Devices,
+        attributes: ['id', 'name', 'UID']
+      },
+      order: [
+        ['id']
+      ]
+    });
     res.send(users);
   } catch (err) {
     console.log(err);

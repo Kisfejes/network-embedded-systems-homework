@@ -42,6 +42,12 @@ async function fetchAPI(resource, method, data) {
         body: JSON.stringify(data)
       };
       break;
+    case 'getAccessConfig':
+      resourceUrl = `${resource}/access-config/${data}`;
+      fetchOptions = {
+        method: 'GET'
+      };
+      break;
     default:
       throw new Error(`Unknown method: ${method}`);
   }

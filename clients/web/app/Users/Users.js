@@ -26,7 +26,12 @@ class Users extends Component {
 
     this.state = {
       modalOpen: false,
-      users: []
+      userEditCreateMode: 'CREATE',
+      users: [],
+      initUserData: {
+        userName: '',
+        rfid: '',
+      }
     };
 
     this.refreshUsers = this.refreshUsers.bind(this);
@@ -43,8 +48,19 @@ class Users extends Component {
     });
   }
 
-  async editUser() {
-    console.log('edit user');
+  async editUser(user) {
+    const accessToDevices = user.Devices.map(device => device.id);
+
+    this.setState({
+      userEditCreateMode: 'EDIT',
+      modalOpen: true,
+      initUserData: {
+        userName: user.name,
+        rfid: user.rfid,
+        accessToDevices,
+        userId: user.id
+      }
+    });
   }
 
   async deleteUser(user) {
@@ -104,7 +120,7 @@ class Users extends Component {
   }
 
   render() {
-    const { users, modalOpen } = this.state;
+    const { users, modalOpen, userEditCreateMode, initUserData } = this.state;
 
     return (
       <div style={styles.container}>
@@ -113,7 +129,16 @@ class Users extends Component {
           <RaisedButton
             label="Create"
             primary
-            onClick={() => { this.setState({ modalOpen: true }); }}
+            onClick={() => {
+              this.setState({
+                userEditCreateMode: 'CREATE',
+                modalOpen: true,
+                initUserData: {
+                  userName: '',
+                  rfid: '',
+                }
+              });
+            }}
           />
         </div>
         <Divider />
@@ -122,7 +147,7 @@ class Users extends Component {
             (users.length === 0) ?
             (
               <div style={styles.bodyTextContainer}>
-                <span style={styles.bodyText}>{'It seems you dont have any user, click to the "Create" button!'}</span>
+                {/* <span style={styles.bodyText}>{'It seems you dont have any user, click to the "Create" button!'}</span> */}
               </div>
             ) :
             (this.renderUsers())
@@ -133,6 +158,8 @@ class Users extends Component {
           <UserEditCreate
             onReqClose={() => { this.setState({ modalOpen: false }); }}
             refreshUsers={this.refreshUsers}
+            mode={userEditCreateMode}
+            initUserData={initUserData}
           />
         }
       </div>

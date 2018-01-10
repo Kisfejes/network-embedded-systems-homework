@@ -3,8 +3,6 @@ const { getDB } = require('../../db/db.js');
 module.exports = async (req, res) => {
   try {
     const db = getDB();
-    console.log(req.params);
-
     const deviceId = req.params.id;
 
     await db.Devices.destroy({

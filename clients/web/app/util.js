@@ -34,7 +34,7 @@ export function generateRandomUserName() {
   return `${_capitalizeFirstLetter(randomFirstName)} ${_capitalizeFirstLetter(randomLastName)}`;
 }
 
-export async function fetchAPI(resource, method, data) {
+export async function fetchAPI(resource, method, data, resourceId) {
   let resourceUrl = '';
   let fetchOptions = {};
 
@@ -51,6 +51,9 @@ export async function fetchAPI(resource, method, data) {
       break;
     case 'list':
       resourceUrl = resource;
+      if (data) {
+        resourceUrl = `${resource}?userId=${data.userId}&deviceId=${data.deviceId}`;
+      }
       fetchOptions = {
         method: 'GET'
       };
@@ -60,6 +63,16 @@ export async function fetchAPI(resource, method, data) {
         method: 'DELETE'
       };
       resourceUrl = `${resource}/${data}`;
+      break;
+    case 'update':
+      fetchOptions = {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      };
+      resourceUrl = `${resource}/${resourceId}`;
       break;
     default:
       throw new Error(`Unknown method: ${method}`);

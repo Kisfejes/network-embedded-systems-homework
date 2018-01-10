@@ -18,6 +18,8 @@
     "onoff": "^1.1.8",
     "pn532": "^0.1.0",
     "serialport": "^6.0.4",
+    "winston": "^3.0.0-rc1",
+    "winston-transport": "^3.0.1",
     "yargs": "^10.0.3"
   }
 }

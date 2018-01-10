@@ -1,6 +1,7 @@
 export default {
   block: {
-    display: 'flex'
+    display: 'flex',
+    alignItems: 'center'
   },
   blockLabel: {
     display: 'flex',

@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   Users.associate = (models) => {
     Users.belongsToMany(models.Devices, { through: 'UserDevices' });
+    Users.hasMany(models.AccessLogs);
   };
   return Users;
 };
